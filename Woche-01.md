@@ -16,10 +16,6 @@ Das letzte, erneut 3- bis 4-wöchige Projekt ist eine Gelegenheit, all diese Fer
 
 Abschließend dürfen Sie als Prüfungsleistung in zwei Wochen eine letzte, den drei während des Semesters bearbeiteten Projekten ähnliche, Aufgabe bearbeiten.
 
-## Arbeit mit IDEA und github classroom
-
-Um den Umgang mit git zu üben, arbeiten wir in diesem Modul mit github classroom. In Moodle wird jede Woche die Übungsaufgabe als ein Einladungs-Link zu github classroom veröffentlicht. Klicken Sie auf diesen Link **während Sie bei github eingeloggt sind**, so wird für Sie ein individuelles, privates Repository angelegt. Beim ersten Klick auf den Link müssen Sie aus der Liste der Teilnehmenden auswählen, wer Sie sind, damit Ihr github-Account mit Ihrem Moodle-Account verknüpft wird.
-
 ## Prüfung und Zulassungsvoraussetzungen
 
 Für jede der wöchentlichen Hausaufgaben gibt es maximal 10 Punkte. Um zur Prüfung zugelassen zu werden, müssen Sie 75% der Punkte über alle Übungen hinweg erreichen.
@@ -28,4 +24,4 @@ Die Prüfung wird dann in Form einer erweiterten Hausaufgabe stattfinden - Sie b
 
 ## Mitarbeit am Skript
 
-Wie Sie sehen können, steht auch das Skript in github zur Verfügung. Wenn Sie Verbesserungsvorschläge haben oder Fehler finden, können Sie entweder einen issue aufmachen oder das Repository forken, die Verbesserung einführen, und einen pull request in dem Skript-Repository aufmachen. Damit üben Sie nicht nur die Arbeit mit github sondern tragen auch zu einer Verbesserung des Skriptes für die nächsten Semester bei. Entsprechend können Sie auf Ihre finale Zensur bis zu 5% Bonus bekommen: Für jeden pull request für das Skript, den ich annehme, bekommen Sie 2.5% Bonus, bis zu einem Maximum von insgesamt 5%.
+Wie Sie sehen können, steht auch das Skript in github zur Verfügung. Wenn Sie Verbesserungsvorschläge haben oder Fehler finden, können Sie entweder einen issue aufmachen oder das Repository forken, die Verbesserung einführen, und einen pull request in dem Skript-Repository aufmachen. Damit üben Sie nicht nur die Arbeit mit github sondern tragen auch zu einer Verbesserung des Skriptes für die nächsten Semester bei. Entsprechend können Sie auf Ihre finale Zensur bis zu 5% Bonus bekommen: Für jeden pull request für das Skript, den ich annehme, bekommen Sie 2.5% Bonus, bis zu einem Maximum von insgesamt 5%. Eine kurze Einführung darin, wie Sie pull requests aufmachen, können Sie den Videos im Skript der nächsten Woche entnehmen. 
