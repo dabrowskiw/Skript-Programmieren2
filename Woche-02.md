@@ -29,3 +29,7 @@ Daraufhin können Sie ein Repository (beispielsweise Ihr privates Hausaufgaben-R
 ## Arbeit mit IDEA und github classroom
 
 Um den Umgang mit git zu üben, arbeiten wir in diesem Modul mit github classroom. In Moodle wird jede Woche die Übungsaufgabe als ein Einladungs-Link zu github classroom veröffentlicht. Klicken Sie auf diesen Link **während Sie bei github eingeloggt sind**, so wird für Sie ein individuelles, privates Repository angelegt. Beim ersten Klick auf den Link müssen Sie aus der Liste der Teilnehmenden auswählen, wer Sie sind, damit Ihr github-Account mit Ihrem Moodle-Account verknüpft wird.
+
+## Die Funktionsweise von git
+
+Leider würde an dieser Stelle eine weitreichende Diskussion der Funktionsweise von git den Rahmen sprengen - eventuell lässt sich das im zweiten Projekt unterbringen. [Hier](https://www.youtube.com/watch?v=8oRjP8yj2Wo&list=PLg7s6cbtAD165JTRsXh8ofwRw0PqUnkVH) gibt es aber für die Wissbegierigen unter Ihnen eine empfehlenswerte kurze Youtube-Serie, die die Motivation für und Funktionsweise von git beschreibt.
