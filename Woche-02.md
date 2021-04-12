@@ -8,6 +8,8 @@ In dieser Woche machen Sie sich mit github, github classroom, der Entwicklungsum
  * zu [JavaDoc, Tests und Debugging](https://mediathek.htw-berlin.de/video/Programmieren-2-JavaDoc-Tests-Debugging/b8517e720b92ee8f4fd0253da4003b60) und
  * zum [Arbeiten mit github classroom und zu github actions](https://mediathek.htw-berlin.de/video/Programmieren-2-Github-und-github-classroom/036e3b2487ed69492f4f31320e79fa3a) - **Hinweis:** Damit das alles funktioniert, müssen Sie sich wie [hier](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) beschrieben einen github access token anlegen und sich in IDEA damit einloggen. Eine genauere Beschreibung finden Sie im nächsten Abschnitt
 
+Die Übung dazu ist leider tatsächlich eine Fingerübung, bei der Sie eine mathematische Berechnung durchführen - aber keine Sorge, das ist das erste und letzte Mal in diesem Semester. Hintergrund ist, dass das schon technisch genug Neues ist, Sie sollen damit zunächst vertraut werden, bevor wir in der nächsten Woche mit dem ersten Projekt beginnen, bei dem Sie auch neue fachliche Hintergründe verstehen müssen.
+
 ## Erstellen eines github-Tokens und einloggen in IDEA
 
 Die Erstellung eines github-Tokens ist [hier](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) beschrieben. Sie sollten für einen Login mittels IDEA die Rechte wie folgt setzen:
