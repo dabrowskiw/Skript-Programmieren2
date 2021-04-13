@@ -35,3 +35,11 @@ Um den Umgang mit git zu üben, arbeiten wir in diesem Modul mit github classroo
 ## Die Funktionsweise von git
 
 Leider würde an dieser Stelle eine weitreichende Diskussion der Funktionsweise von git den Rahmen sprengen - eventuell lässt sich das im zweiten Projekt unterbringen. [Hier](https://www.youtube.com/watch?v=8oRjP8yj2Wo&list=PLg7s6cbtAD165JTRsXh8ofwRw0PqUnkVH) gibt es aber für die Wissbegierigen unter Ihnen eine empfehlenswerte kurze Youtube-Serie, die die Motivation für und Funktionsweise von git beschreibt.
+
+## Bemerkung bezüglich hinzufügen von dependencies mit der build.gradle Datei
+
+Seit Version 4.10 sind die Methoden `compile`, `runtime`, `testCompile`, `testRuntime` bei gradle als despracted markiert und wurden mit der aktuellsten Version entfernt. Stattdessen sollte `implementation`, `runtimeOnly`, `testImplementation` und `testRuntimeOnly` verwendet werden. 
+
+Im Video werden noch die alten Methoden verwendet, dies kann dazu führen, das die Github Actions fehlschlagen, da Github die neueste Gradle Version benutzt. 
+
+
