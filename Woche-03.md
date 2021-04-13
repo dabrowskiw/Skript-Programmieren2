@@ -53,3 +53,35 @@ Die HashMap heißt so, weil sie eigentlich nur ein normales array ist. Der Index
 
 In den Beispielen könnte Ihnen aufgefallen sein, dass die Listen und Maps nicht einfach als ```LinkedList mylist;``` sondern als z.B. ```LinkedList<String> mylistGeneric;``` deklariert sind. Dabei handelt es sich um Generics: Klassen, die Dinge mit anderen Klassen tun (insbesondere verwalten, wie Listen oder Maps), können generalisiert werden. Bei der Deklaration kann dann in dreieckigen Klammern angegeben werden, mit welcher anderen Klasse gearbeitet werden soll. Das hat den Vorteil, dass man sich dann darauf verlassen kann, dieses Objekt auch tatsächlich zurückzubekommen - vereinfacht gesagt könnte aus einer ```LinkedList mylist;``` bei ```mylist.get(0)``` ein String, ein Integer, eine CityCosts oder irgendein anderes Objekt rauskommen und man müsste eigentlcih immer überprüfen, was man denn gerade bekommen hat. Bei einer ```LinkedList<String> mylistGeneric;```führt der Versuch, irgendwas anderes als einen String über die ```àd```-Methode hinzuzufügen, direkt zu einem Fehler, und entsprechen kann man sich sicher sein, bei ```mylistGeneric.get(0)``` einen String zurückzubekommen. Auf die tieferen Details von generics gehen wir aber erst ein, wenn wir uns Vererbung im Detail anschauen. 
 
+## Command line interface
+
+Die einfachste - dadurch aber in keiner Art unwichtige - Form von Benutzerinterface ist das Kommandozeileninterface (CLI, CommandLine Interface). Diese erlauben es, Argumente an ein Programm beim Aufruf von der Kommandozeile aus zu übergeben. So ungewohnt dies wirken mag, falls man nur grafische Benutzeroberflächen (GUI, Graphical User Interface) gewohnt ist, hat das CLI gegenüber GUIs mehrere Vorteile:
+
+ * Die Implementation ist deutlich einfacher, somit kann mit dem gleichen Aufwand ein viel höherer Funktionsumfang erreicht werden
+ * Es ist eine einfache Automatisierung möglich: Basierend auf dem, was die Software tun soll, kann als String der Kommandozeilenaufruf generiert werden, während bei einem GUI umständliche Automatisierung von Mauseingaben nötig wäre
+ * CLI-Software kann auch auf Servern eingesetzt werden, die keinen Bildschirm und kein Grafiksystem besitzen
+ * Es ist eine effizientere Verwendung möglich: CLIs sind konzeptionell nah am natursprachlichen Modell (über den Programmnamen wird dem Computer mitgeteilt, was er tun soll, über die Argumente wird spezifiziert wie er es tun soll), während die Kommunikation über ein GUI die Interaktion auf stummes Zeigen reduziert
+
+Das soll nicht bedeuten, GUIs hätten keine Daseinsberechtigung. Es sind aber einige Argumente, warum CLIs weiterhin relevant sind und auch in Zukunft auf absehbare Zeit viel Software mit CLI statt GUI entwickelt wird. 
+
+### Aufbau einer Kommandozeile
+
+Es gibt unterschiedliche Arten, Argumente an ein Programm mittels CLI zu übergeben. Ein Standard, der sich insbesondere in der Linux-Welt etabliert hat, basiert auf den GNU Coding Standards und den POSIX Conventions for Command Line Arguments. Kurz zusammengefasst:
+
+ * Argumente können Namen haben 
+ * Argumentnamen können entweder in einer Langform (ein Wort, z.B. ```name```) oder in einer Kurzform (ein Buchstabe, z.B. ```n```) oder
+ * Um anzuzeigen, dass es sich um einen Argumentnamen handelt, werden vor der Langform zwei Bindestriche (z.B. ```--name```) und vor der Kurzform ein Bindestrich (z.B. ```-n```) geschrieben
+ * Argumente können Werte haben (z.B. ```--name Max```). Benötigt ein Argument keinen Wert, wird es als flag bezeichnet (sozusagen ein boolean-Wert, der true ist falls das Argument angegeben wird, und sonst false)
+ * Argumente können mehrere Werte haben (z.B. ```--names Max Miriam```)
+
+Ein beispielhafter Programmaufruf für ein Programm, welches Kombinationen von Vor- (```--firstnames```) und Nachnamen (```--lastnamesnames```) ausgibt und bei dem man einstellen kann, wie viele Kombinationen ausgegeben werden (```-c```) und ob sie zeilenweise ausgegeben werden sollen (```-l```) könnte sein:
+
+```
+printnames --firstnames Max Miriam Lisa --lastnames Müller Schmidt -c 5 -l
+```
+
+Die ersten beiden Argumente sind Langformen mit jeweils drei und zwei Werten. Das dritte Argument ist eine Kurzform mit einem Wert. Das vierte Argument ist wieder eine Kurzform, allerdings ohne Wert, also ein flag.  
+
+### Apache Commons-CLI
+
+Wie Sie sehen können, kann durch die Verwendung von Argumenten auf der Kommandozeile eine hohe Flexibilität bei dem Einsatz von Software erreicht werden. All diese Regeln in jedem Programm manuell beim Auswerten von ```String[] args``` umzusetzen, wäre allerdings äußerst mühsam. Entsprechend gibt es externe Bibliotheken, die diese Arbeit übernehmen. In diesem Modul schauen wir uns [Apache Commons CLI](https://commons.apache.org/proper/commons-cli/) an.  
