@@ -173,7 +173,7 @@ Beachten Sie dabei, dass bei Optionen, die mehrere Argumente bekommen können, s
 
 #### Alles zusammesetzen
 
-Den kompletten Code können Sie in lauffähiger Form als IDEA-Projekt im [Beispielcode-Repository](https://github.com/dabrowskiw/Beispielcode-Programmieren2) finden. Es ist auch eine Laufkonfiguration definiert, mit der Sie direkt über gradle das Projekt mit Kommandozeilenparametern starten können. Relevant ist dafür die Zeile ```id 'application'```) im plugins-Bereich sowie diese Zeilen:
+Den kompletten Code können Sie in lauffähiger Form als IDEA-Projekt im [Beispielcode-Repository](https://github.com/dabrowskiw/Beispielcode-Programmieren2) (konkret in der Datei [PrintNames.java](https://github.com/dabrowskiw/Beispielcode-Programmieren2/blob/master/src/main/org/htw/prog2/beispiele/cli/PrintNames.java) finden. Es ist auch eine Laufkonfiguration definiert, mit der Sie direkt über gradle das Projekt mit Kommandozeilenparametern starten können. Relevant ist dafür die Zeile ```id 'application'```) im plugins-Bereich sowie diese Zeilen:
 
 ```
 mainClassName = 'org.htw.prog2.beispiele.cli.PrintNames'
