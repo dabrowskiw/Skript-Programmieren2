@@ -66,13 +66,12 @@ Das soll nicht bedeuten, GUIs hätten keine Daseinsberechtigung. Es sind aber ei
 
 ### Aufbau einer Kommandozeile
 
-Es gibt unterschiedliche Arten, Argumente an ein Programm mittels CLI zu übergeben. Ein Standard, der sich insbesondere in der Linux-Welt etabliert hat, basiert auf den GNU Coding Standards und den POSIX Conventions for Command Line Arguments. Kurz zusammengefasst:
+Es gibt unterschiedliche Arten, Optionen an ein Programm mittels CLI zu übergeben. Ein Standard, der sich insbesondere in der Linux-Welt etabliert hat, basiert auf den GNU Coding Standards und den POSIX Conventions for Command Line Arguments. Kurz zusammengefasst:
 
- * Argumente können Namen haben 
- * Argumentnamen können entweder in einer Langform (ein Wort, z.B. ```name```) oder in einer Kurzform (ein Buchstabe, z.B. ```n```) oder
- * Um anzuzeigen, dass es sich um einen Argumentnamen handelt, werden vor der Langform zwei Bindestriche (z.B. ```--name```) und vor der Kurzform ein Bindestrich (z.B. ```-n```) geschrieben
- * Argumente können Werte haben (z.B. ```--name Max```). Benötigt ein Argument keinen Wert, wird es als flag bezeichnet (sozusagen ein boolean-Wert, der true ist falls das Argument angegeben wird, und sonst false)
- * Argumente können mehrere Werte haben (z.B. ```--names Max Miriam```)
+ * Optionen müssen eine Kurzform haben (ein Buchstabe, z.B. ```n```) und können zusätzlich optional in einer Langform (ein Wort, z.B. ```name```) angegeben werden
+ * Vor der Langform werden zwei Bindestriche (z.B. ```--name```) und vor der Kurzform ein Bindestrich (z.B. ```-n```) geschrieben
+ * Optionen können Argumente haben (z.B. ```--name Max```). Benötigt eine Option kein Argument, wird sie als flag bezeichnet (sozusagen ein boolean-Wert, der true ist falls die Option angegeben wird, und sonst false)
+ * Optionen können mehrere Argumente haben (z.B. ```--names Max Miriam```)
 
 Ein beispielhafter Programmaufruf für ein Programm, welches Kombinationen von Vor- (```--firstnames```) und Nachnamen (```--lastnamesnames```) ausgibt und bei dem man einstellen kann, wie viele Kombinationen ausgegeben werden (```-c```) und ob sie zeilenweise ausgegeben werden sollen (```-l```) könnte sein:
 
@@ -80,8 +79,116 @@ Ein beispielhafter Programmaufruf für ein Programm, welches Kombinationen von V
 printnames --firstnames Max Miriam Lisa --lastnames Müller Schmidt -c 5 -l
 ```
 
-Die ersten beiden Argumente sind Langformen mit jeweils drei und zwei Werten. Das dritte Argument ist eine Kurzform mit einem Wert. Das vierte Argument ist wieder eine Kurzform, allerdings ohne Wert, also ein flag.  
+Die ersten beiden Optionen sind Langformen mit jeweils drei und zwei Argumenten. Die dritte Option ist eine Kurzform mit einem Argument. Die vierte Option ist wieder eine Kurzform, allerdings ohne Argument, also ein flag.  
 
 ### Apache Commons-CLI
 
-Wie Sie sehen können, kann durch die Verwendung von Argumenten auf der Kommandozeile eine hohe Flexibilität bei dem Einsatz von Software erreicht werden. All diese Regeln in jedem Programm manuell beim Auswerten von ```String[] args``` umzusetzen, wäre allerdings äußerst mühsam. Entsprechend gibt es externe Bibliotheken, die diese Arbeit übernehmen. In diesem Modul schauen wir uns [Apache Commons CLI](https://commons.apache.org/proper/commons-cli/) an.  
+Wie Sie sehen können, kann durch die Verwendung von Optionen und Argumenten auf der Kommandozeile eine hohe Flexibilität bei dem Einsatz von Software erreicht werden. All diese Regeln in jedem Programm manuell beim Auswerten von ```String[] args``` umzusetzen, wäre allerdings äußerst mühsam. Entsprechend gibt es externe Bibliotheken, die diese Arbeit übernehmen. In diesem Modul schauen wir uns [Apache Commons-CLI](https://commons.apache.org/proper/commons-cli/) an.  
+
+In gradle kann Commons-CLI dem Projekt über einen Eintrag in dem dependencies-Block hinzugefügt werden:
+
+```
+dependencies {
+// ...
+    compile 'commons-cli:commons-cli:1.4'
+}
+```
+
+Daraufhin können die notwendigen Pakete am einfachsten komplett mittels
+
+```java
+import org.apache.commons.cli.*;
+```
+
+importiert werden.
+
+Das Auswerten der Kommandozeile geht in drei Schritten voran: Zunächst müssen die möglichen Optionen definiert werden, dann findet das Parsen von ```String[] args``` statt, um zu ermitteln welche der möglichen Optionen mit welchen Argumenten übergeben wurden, und danach kann auf die übergebenen Optionen und Argumente zugegriffen werden.
+
+#### Definition von Optionen
+
+Die möglichen Optionen werden in einem ```Options```-Objekt gehalten. Diesem können neue Optionen über unterschiedliche Varianten der Methode ```addOption``` hinzugefügt werden (eine genaue Beschreibung ist in der [Javadoc zu Options](https://commons.apache.org/proper/commons-cli/javadocs/api-release/org/apache/commons/cli/Options.html) zu finden):
+
+```java
+Options options = new Options();
+options.addOption("l", "Print linewise"); // Nur Kurzform, keine Argumente
+options.addOption("c", "count", true, "Number of combinations"); // Kurz- und Langform, nimmt ein Argument
+```
+
+Diese Standard-Versionen von ```addOption``` erlauben es, schnell und übersichtlich neue Optionen hinzuzufügen. Für mehr Kontrolle über die Details gibt es aber auch die Möglichkeit, an ```addOption``` ein zuvor genauer konfiguriertes ```Option```-Objekt zu übergeben. Dafür kann entweder das ```Option```-Objekt zunächst mittels Constructor erstellt und dann über setter-Methoden konfiguriert werden:
+
+```java
+Option opt = new Option("F", "List of first names");
+opt.setArgs(Option.UNLIMITED_VALUES);
+opt.setLongOpt("firstnames");
+opt.setRequired(true);
+options.addOption(opt);
+```
+
+Alternativ kann ein ```OptionBuilder``` verwendet werden - Sie erinnern sich vielleicht noch aus dem letzten Semester daran, dass eine statische Methode in einer Klasse verwendet werden kann, ein neues Objekt dieser Klasse zu erstellen und zurückzugeben. Ähnlich funktioniert ein Builder: Jede seiner Methoden gibt wieder einen Builder zurück, in dem der entsprechende Parameter aktualisiert wurde, so dass durch eine Kette von Aufrufen der Builder wunschgemäß konfiguriert werden kann. Ein finaler Aufruf von ```build()``` erzeugt dann ein ```Option```-Objekt mit den entsprechenden Parametern. Das ist in Java eine gängige Methode, den Code übersichtlicher zu gestalten:
+
+```java
+options.addOption(Option.builder("L").
+    hasArg(true).
+    numberOfArgs(Option.UNLIMITED_VALUES).
+    longOpt("lastnames").
+    required(true).
+    desc("List of last names").build());
+```
+
+#### Parsen von Argumenten
+
+Für das Herausparsen der definierten Optionen und ihrer Argumente aus der Kommandozeile wird ein ```CommandLineParser``` verwendet (der ```DefaultParser``` ist eine konkrete Ausprägung des ```CommandLineParser``` - bei Vererbung mehr dazu). Dieser kann einen ```String[]``` parsen und gibt ein ```CommandLine```-Objekt zurück oder wirft eine ```ParseException``` (falls z.B. eine Option, für die required gesetzt wurde, nicht angegeben wurde, für eine Option die ein Argument braucht keins angegeben wurde etc.):
+
+```java
+CommandLineParser parser = new DefaultParser();
+CommandLine cli;
+try {
+    cli = parser.parse(options, args); // args ist ein String[]
+} catch (ParseException e) {
+    System.out.println("Error: " + e.getMessage());
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.printHelp("HIVDiagnostics", options);
+}
+```
+
+Die Hilfsklasse ```HelpFormatter``` wird hier verwendet, um einen Standard-Hilfetext aus dem ```Options```-Objekt zu generieren, in dem alle möglichen Optionen mit Beschreibungen und zusätzlichen Informationen (ob und wie viele Argumente übergeben werden müssen, ob die Option zwingend erforderlich ist) ausgegeben werden.
+
+#### Zugriff auf Optionen und Werte
+
+Nach dem Parsen können aus dem ```CommandLine```-Objekt die angegebenen Optionen und ihre Werte abgefragt werden:
+
+```java
+if(cli.hasOption('c')) {
+    System.out.println(cli.getOptionValue('c'))    
+}
+if(cli.hasOption("lastnames")) {
+    System.out.println("Possible last names:");
+    for(String lastname : cli.getOptionValues("lastnames")) {
+        System.out.println("  * " + lastname);    
+    }
+}
+```
+
+Beachten Sie dabei, dass bei Optionen, die mehrere Argumente bekommen können, statt ```getOptionValue``` die Methode ```getOptionValues``` verwendet werden sollte, die alle Argumente als ```String[]``` zurückgibt. 
+
+#### Alles zusammesetzen
+
+Den kompletten Code können Sie in lauffähiger Form als IDEA-Projekt im [Beispielcode-Repository](https://github.com/dabrowskiw/Beispielcode-Programmieren2) finden. Es ist auch eine Laufkonfiguration definiert, mit der Sie direkt über gradle das Projekt mit Kommandozeilenparametern starten können. Relevant ist dafür die Zeile ```id 'application'```) im plugins-Bereich sowie diese Zeilen:
+
+```
+mainClassName = 'org.htw.prog2.beispiele.cli.PrintNames'
+
+run {
+    args '--firstnames Max Miriam Lisa --lastnames Müller Schmidt -c bla -l'.split(" ")
+}
+```
+
+in build.gradle.
+
+Um den gradle-Task zum Ausführen zu starten, wählen Sie auf der rechten Seite "Gradle" aus, dann Rechtsklick auf Tasks->application->run und die erste Option ("Run as") auswählen. Unten sehen Sie dann den output (rot eingerahmte Bereiche in der Abbildung):
+
+![gradle-run](Bilder/beispielcode.png)
+
+Beachten Sie bitte: Falls es einen Fehler gibt, sehen Sie diesen nicht direkt im gradle-output, da standardmäßig die gradle-Details (und nicht die Informationen der Programmausführung) ausgewählt sind. Um die Exception aus Ihrem Code zu sehen, klicken Sie unten links auf den blau umrandeten Bereich statt auf den standardmäßig ausgewählten rot umrandeten Bereich:
+
+![gradle-errors](Bilder/gradleerror.png)
