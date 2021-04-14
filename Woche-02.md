@@ -40,6 +40,16 @@ Leider würde an dieser Stelle eine weitreichende Diskussion der Funktionsweise 
 
 Seit Version 4.10 sind die Methoden `compile`, `runtime`, `testCompile`, `testRuntime` bei gradle als despracted markiert und wurden mit der aktuellsten Version entfernt. Stattdessen sollte `implementation`, `runtimeOnly`, `testImplementation` und `testRuntimeOnly` verwendet werden. 
 
-Im Video werden noch die alten Methoden verwendet, dies kann dazu führen, das die Github Actions fehlschlagen, da Github die neueste Gradle Version benutzt. 
+Im Video werden noch die alten Methoden verwendet, dies kann dazu führen, das die Github Actions fehlschlagen, da Github die neueste Gradle Version benutzt. Sollte dies geschehen, kann in build.gradle die Zeile
 
+```
+    compile 'commons-cli:commons-cli:1.4'
+```
 
+durch
+
+```
+    implementation 'commons-cli:commons-cli:1.4'
+```
+
+ersetzt werden, damit funktioniert es sowohl unter gradle 6 also auch unter gradle 7.
