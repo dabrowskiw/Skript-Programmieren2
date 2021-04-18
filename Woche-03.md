@@ -1,6 +1,6 @@
 # Woche 03
 
-In dieser Woche befassen wir uns mit der einfachsten Form von Benutzerintefraces: Dem Kommandozeileninterface. Doch zunächst holen wir noch eine wichtige Datenstruktur nach: Die HashMap.
+In dieser Woche befassen wir uns mit der einfachsten Form von Benutzerintefraces: Dem Kommandozeileninterface. Doch zunächst holen wir noch zwei wichtige Datenstrukturen nach: Die HashMap und das HashSet.
 
 ## HashMap
 
@@ -48,6 +48,20 @@ Eine Alternative stellen maps (in anderen Sprachen häufig auch dictionaries ode
 Nicht nur ist der Code kürzer und verständlicher, er ist auch deutlich effizienter: Die Zeit, die der Zugriff auf ein Element in einer HashMap dauert, ist nicht von der Anzahl der Elemente in der HashMap abhängig (abgesehen von Effekten, die darauf zurückzuführen sind, dass kleine Datenmengen z.T. komplett im CPU-cache vorgehalten werden könnten, während größere Datenmengen in RAM oder sogar swap ausgelagert werden müssen). 
 
 Die HashMap heißt so, weil sie eigentlich nur ein normales array ist. Der Index, unter dem ein value dabei abgelegt wird, wird aus dem hash (falls Sie das noch nicht in einer anderen Vorlesung hatten: Eine hash-Funktion berechnet aus einem beliebig großen Objekt einen Zahlenwert, ein einfaches Beispiel wäre "Addiere die Werte aller bytes in dem Objekt zusammen und gib das Ergebnis modulo 1024 zurück" - diese Funktion würde für jedes beliebige Objekt einen Wert zwischen 0-1023 zurückgeben) des keys berechnet. Dabei muss auf ein paar Details geachtet werden: Bei zwei unterschiedlichen Objekten kann der gleiche hash-Wert rauskommen ("hash-Kollision"), der hash-Wert kann größer werden als die Länge des Arrays, das Array ist irgendwann voll und muss vergrößert werden etc. Mehr über solche Details werden Sie in dem Modul "Algorithmen und Datenstrukturen" lernen.
+
+## HashSet
+
+Manchmal benötigt man keinen schnellen Zugriff auf einen Wert basierend auf einem Schlüssel, sondern es reicht, schnell rauszubekommen, ob man überhaupt einen bestimmten Wert in der Datenstruktur hat (also sozusagen zur die Funktionalität von ```containsKey()``` aus HashMap, ohne dann auf das Element dahinter zugreifen zu wollen). So etwas könnte z.B. bei einer Software für den Versand von Werbung relevant sein: Liegt eine Liste von Adresse vor, an die keine Werbung versendet werden soll, reicht es, bei jeder geplanten Sendung zu überprüfen, ob die Adresse in dieser Liste ist. In diesem Fall wird von der Sendung abgesehen - weitere Informationen, als dass die Adresse in der Liste ist, werden nicht benötigt. Dafür kann man ein HashSet verwenden, dem Elemente genauso hinzugefügt werden können wie einer HashMap, das Vorhandensein von Elementen wird über die Methode ```contains()``` überprüft:
+
+```java
+values.add("Irgendwas");
+if(values.contains("Irgendwas")) {
+  System.out.println("Ist drin.");
+}
+if(values.contains("Irgendwas andres")) {
+  System.out.println("Ist nicht drin.");
+}
+```
 
 ## Generics - erste kurze Erwähnung
 
