@@ -87,7 +87,7 @@ Es gibt unterschiedliche Arten, Optionen an ein Programm mittels CLI zu übergeb
  * Optionen können Argumente haben (z.B. ```--name Max```). Benötigt eine Option kein Argument, wird sie als flag bezeichnet (sozusagen ein boolean-Wert, der true ist falls die Option angegeben wird, und sonst false)
  * Optionen können mehrere Argumente haben (z.B. ```--names Max Miriam```)
 
-Ein beispielhafter Programmaufruf für ein Programm, welches Kombinationen von Vor- (```--firstnames```) und Nachnamen (```--lastnamesnames```) ausgibt und bei dem man einstellen kann, wie viele Kombinationen ausgegeben werden (```-c```) und ob sie zeilenweise ausgegeben werden sollen (```-l```) könnte sein:
+Ein beispielhafter Programmaufruf für ein Programm, welches Kombinationen von Vor- (```--firstnames```) und Nachnamen (```--lastnames```) ausgibt und bei dem man einstellen kann, wie viele Kombinationen ausgegeben werden (```-c```) und ob sie zeilenweise ausgegeben werden sollen (```-l```) könnte sein:
 
 ```
 printnames --firstnames Max Miriam Lisa --lastnames Müller Schmidt -c 5 -l
