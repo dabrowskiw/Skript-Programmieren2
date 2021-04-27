@@ -2,6 +2,8 @@
 
 ## Feinheiten der Vererbung
 
+### Hierarchie aus javadoc rauslesen
+
 ### Interfaces
 
 ### Abstrakte Klassen

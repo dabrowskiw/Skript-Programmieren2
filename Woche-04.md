@@ -123,7 +123,11 @@ public class Schulranzen extends Rucksack {
         }
         return false;
     }
-    
+
+    /**
+     * Pausenbrot rausnehmen.
+     * @return true, falls noch Pausenbrote im Rucksack waren, sonst false.
+     */
     public boolean pausenbrotRausnehmen() {
         if(pausenbrote > 0) {
             pausenbrote --;
@@ -144,4 +148,96 @@ ranzen.pausenbrotReinlegen()
 
 Wichtig ist dabei zu beachten, dass die Initialisierung des Objekts hier über den Constructor ```Schulranzen(int maxInhalt, int maxPausenbrote)``` erfolgt. Da die ganze Funktionalität für das Reinlegen und Rausnehmen von Gegenständen aber über den Constructor von ```Rucksack``` erfolgt, muss auch dieser Constructor der sogenannten Superklasse - der Klasse, von der geerbt wird - aufgerufen werden, um die entsprechende Initialisierung durchzuführen. Das erfolgt über den Aufruf ```super(maxInhalt)```: Hier wird zunächst der Constructor der Superklasse aufgerufen, bevor weitere für den Schulranzen spezifische Initialisierungsschritte durchgeführt werden.
 
-### Überschreiben von Eigenschaften 
+### Überschreiben von Eigenschaften
+
+Erbende Klassen müssen allerdings nicht einfach alles übernehmen, was die Superklasse vorgibt. Beispielsweise könnte ein ```FlaschenSchulranzen``` auch Trinkflaschen aufnehmen - allerdings nehmen die den gleichen Platz ein, wie Pausenbrote. In so einem Fall könnte zwar die Funktionalität von Schulranzen großteils übernommen und, ähnlich wie bei der Erweiterung des Rucksacks zum Schulranzen, um das Verwalten von Trinkflaschen erweitert werden. Allerdings müsste dann bei ```pausenbrotReinlegen``` die Funktionalität auch geändert werden: Es müsste bei der Überprüfung des Platzes auch getestet werden, wie viel Platz von Flaschen eingenommen wird:
+
+```java
+import java.util.LinkedList;
+
+public class FlaschenSchulranzen extends Schulranzen {
+    int maxFlaschenUndPausenbrote = 0;
+    int flaschen = 0;
+
+    /**
+     * Einen FlaschenSchulranzen erstellen.
+     * @param maxInhalt Maximale Anzahl an Gegenständen, die reingetan werden können.
+     * @param maxFlaschenUndPausenbrote Maximale Anzahl an Pausenbroten und Flaschen, die reingetan werden können.
+     */
+    public FlaschenSchulranzen(int maxInhalt, int maxFlaschenUndPausenbrote) {
+        super(maxInhalt, maxFlaschenUndPausenbrote);
+        this.maxFlaschenUndPausenbrote = maxFlaschenUndPausenbrote;
+    }
+
+    /**
+     * Pausenbrot in den Rucksack reintun.
+     * @return true, falls fas Pausenbrot reingelegt werden konnte. False, falls kein Platz mehr für weitere Pausenbrote ist.
+     */
+    public boolean pausenbrotReinlegen() {
+        // Anpassung im Vergleich zu Schulranzen: Es können
+        // insgesamt nur maximal maxFlaschenUndPausenbrote
+        // Flaschen und Pausenbrote reingetan werden
+        if((pausenbrote + flaschen) < maxFlaschenUndPausenbrote) {
+            pausenbrote ++;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Flasche in den Rucksack reintun.
+     * @return true, falls fas Flasche reingelegt werden konnte. False, falls kein Platz mehr für weitere Flaschen ist.
+     */
+    public boolean flascheReinlegen() {
+        if((pausenbrote + flaschen) < maxFlaschenUndPausenbrote) {
+            flaschen ++;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Flasche rausnehmen.
+     * @return true, falls noch Flaschen im Rucksack waren, sonst false.
+     */
+    public boolean FlascheRausnehmen() {
+        if(flaschen > 0) {
+            flaschen --;
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+Wird nun auf einem Objekt vom Typ FlaschenSchulranzen die Methode 
+```pausenbrotReinlegen``` aufgerufen, wird nicht die in Schulranzen implementierte Methode, sondern die "überschriebene" Methode aus FlaschenSchulranzen ausgeführt. Intern funktioniert das so, dass Java bei einem Methodenaufruf zunächst in der Klasse des verwendeten Objekts (in diesem Beispiel FlaschenSchulranzen) überprüft, ob diese Methode definiert ist. Falls ja, wird diese verwendet. Falls nein, wird in der Superklasse das Gleiche getan: Überprüfen, ob die Methode vorhanden ist, falls ja aufrufen, falls nein in der Superklasse schauen. So wird sich weitergehangelt, bis eine Superklasse gefunden wird, die die Methode enthält.
+
+
+## Konkrete Verwendung: Exceptions
+
+Das Konzept haben Sie bereits implizit beim Umgang mit Exceptions verwendet. Nehmen wir beispielsweise diesen Code, um eine Datei zu öffnen und den Inhalt auszugeben:
+
+```java
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+public class FileDumper {
+    public static void dumpFile(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File(filename)));
+            while(reader.ready()) {
+                System.out.println(reader.readLine());
+            }
+        } catch(Exception e) {
+            System.out.println("Fehler beim Ausgeben von " + filename);
+        }
+    }
+}
+```
+
+In diesem Code können zwei Exceptions auftreten: Bei der Erstellung von ```BufferedReader``` eine ```FileNotFoundException``` (falls die Datei nicht vorhanden ist), und bei ```reader.readLine()``` eine ```IOException``` (bei diversen systembedingten Zugriffsfehlern). Beide diese Exception-Klassen leiten von der Exception-Oberklasse ```Exception``` auf, wodurch ein allgemeines Abfangen über ```catch(Exception e)``` möglich ist (tatsächlich leitet auch FileNotFoundException von IOException ab, entsprechend würde auch ```catch(IOException e)``` funktionieren).
+
+Das ist nützlich, da man so auf unterschiedliche Typen von Exceptions, die in der Regel unterschiedliche Fehlerquellen beschreiben, unterschiedlich reagieren kann - oder auch (wie in diesem Beispiel) pauschal auf alle Exceptions gleich reagieren kann.
+
