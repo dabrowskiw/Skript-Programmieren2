@@ -275,3 +275,10 @@ public class SwingWindow extends JFrame {
 In diesem Beispiel wird ein neues ```JPanel``` mit einem eigenen Layout (in diesem Fall ein ```BorderLayout```, welches sich häufig für besonders simple GUIs anbietet) und zwei Buttons erstellt. Dann wird dieses gesamte ```JPanel``` dem ```JFrame``` in dem Feld unter dem ```JLabel``` hinzugefügt, das Ergebnis ist wie folgt:
 
 ![Verschachtelt](Bilder/GUI/window4.png)
+
+#### packing
+
+In allen bisher gezeigten Beispielen wurde die Größe des Fensters am Anfang definiert. Allerdings ist es schwer immer exakt abzuschätzen, wie viel Platz die einzelnen Komponenten eines GUI benötigen werden. Wird als letzte Anweisung nach dem Hinzufügen aller Elemente die Methode ```pack``` aufgerufen, dann wird die Fenstergröße an den Platzbedarf der hinzugefügten Komponenten angepasst - im obigen Beispiel sieht das Fenster dann wie folgt aus:  
+
+![Verschachtelt](Bilder/GUI/window5.png)
+
