@@ -1,6 +1,6 @@
 # Woche 07 
 
-In dieser Woche fügen wir dem GUI Interaktion hinzu.
+In dieser Woche fügen wir dem GUI Interaktion hinzu, und schauen uns hierfür noch ein paar Feinheiten der objektorientierten Programmierung in Java an.
 
 ## Das observer pattern
 
@@ -217,12 +217,39 @@ public class CalculatorMain {
 
 Hier werden die ```CalculationObserver``` direkt in den Aufrufen der ```addObserver```-Methode in ```runCalculations``` implementiert und instanziiert. Da sie automatisch auch interne Methoden von ```CalculationMain``` sind, können sie weiterhin direkt auf ```calculationName``` zugreifen.
 
-* Interne Klassen (können Attribute/Methoden der äußeren Klasse nutzen)
-* Anonyme Klassen
-* Event handling/Action listener (getParent)
-* JOptionPane -> https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+## Event handling mittels observer pattern in swing
 
+In swing gibt es nicht nur eine Sorte Ereignis (event), welches mit einem GUI-Element auftreten kann, sondern sehr viele unterschiedliche: Vom Klick auf einen Button über die Mauszeigerbewegung bis hin zu Texteingaben. Jede ```JComponent``` ist in der Lage, interessierte ```Listener``` (so heißen observer in swing) über unterschiedliche solche events zu informieren. Dabei müssen die ```Listener``` je nach event-Typ, über den sie informiert werden wollen, unterschiedliche Interfaces implementieren, und entsprechend auch unterschiedlichen Listen der ```JComponent``` hinzugefügt werden. Soll beispielsweise auf das Aktivieren eines GUI-Elements (z. B. durch einen Mausklick, aber auch über "Tab->Enter", Sprachsteuerung etc.) reagiert werden, muss der observer das Interface ```ActionListener``` implementieren und der ```JComponent``` über die Methode ```addActionListener``` hinzugefügt werden.
 
-* Overloading paint
-* Ribbon UI etc.
-* Event listeners
+Im folgenden Beispiel wird auf diese Art immer, wenn auf den Button geklickt wird, der Text "Hallo!" ausgegeben, wobei der verwendete ```ActionListener``` als anonyme interne Klasse implementiert ist:
+
+```java
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class EventDemo extends JFrame {
+    public EventDemo() {
+        super("Event-Demo");
+        JButton helloButton = new JButton("Say hi!");
+        helloButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Hallo!");
+            }
+        });
+        add(helloButton);
+    }
+
+    public static void main(String[] args) {
+        EventDemo demo = new EventDemo();
+        demo.setVisible(true);
+    }
+}
+```
+
+## Übliche Operationen: Benachrichtigungen und Dateiauswahl
+
+Da die wenigsten bei der Verwendung von GUIs gleichzeitig die Kommandozeile im Auge behalten, ist es keine gute Idee, relevante Informationen wie z.B. Fehlermeldungen über ```System.out.println()``` auszugeben. Stattdessen sind popup-Fenster eine übliche Herangehensweise. Eine gleichzeitig einfache und flexible Methode, solche Fenster anzuzeigen, bietet die Klasse ```JOptionPane```, für deren Verwendung es auf der dazugehörigen [Dokumentationsseite von Oracle](https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html) eine schöne Zusammenfassung gibt. 
+
+Eine weitere sehr übliche Art der Interaktion, die auf diese Art implementiert wird, ist die Auswahl von Dateien. Entsprechend gehört das Dateiauswahlfenster zu den Standard-GUI-Elementen, die in swing bereits implementiert sind: Der ```JFileChooser```, zu dem eine ausführliche Dokumentation auf der entsprechenden [Dokumentations-Seite von Oracle](https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html) zu finden ist.
