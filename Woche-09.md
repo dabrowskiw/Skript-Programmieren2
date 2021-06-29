@@ -8,9 +8,9 @@ Häufig werden Bilder geladen, die im Original nicht der Größe entsprechen, we
 
 ```java
 public BufferedImage scaleImage(BufferedImage input, int newWidth, int newHeight) {
-    BufferedImage result = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ABGR);
+    BufferedImage result = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_4BYTE_ABGR);
     Image scaledImage = input.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-    result.drawImage(scaledImage, 0, 0, null):
+    result.getGraphics().drawImage(scaledImage, 0, 0, null);
     return result;
 }
 ```
